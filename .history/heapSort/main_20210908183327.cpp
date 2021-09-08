@@ -34,10 +34,10 @@ class Box{
 int main(){
 
   //Inputs
-  int n=400;
+  int n=100;
   Box b(n);
 
-  int type=0, i=0,largest,l,r,length=n-1;
+  int type=0, i=0,largest,l,r,length=99;
   largest=l=r=0;
 
   // bool isSpacePressed=true;
@@ -89,12 +89,10 @@ int main(){
             }
             else{
               if(st.empty()){
-                type =1;
-
-              }else{
-                i = st.front();
-                st.pop();
-              }
+                
+              } type =1;
+              i = st.front();
+              st.pop();
             }
           
       }

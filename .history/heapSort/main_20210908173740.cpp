@@ -18,10 +18,10 @@ class Box{
       Data data;
       for(int i=0;i<value;i++){
         data.posx = i;
-        data.height = 1 + rand()%(500);
-        data.x = i+ rand()%(255);
-        data.y = i+ rand()%(255);
-        data.z = i+ rand()%(255);
+        data.height = 1 + rand()%(400);
+        data.x = 1+ rand()%(255);
+        data.y = 1+ rand()%(255);
+        data.z = 1+ rand()%(255);
         column.push_back(data);
       }
     }
@@ -34,17 +34,17 @@ class Box{
 int main(){
 
   //Inputs
-  int n=400;
+  int n=100;
   Box b(n);
 
-  int type=0, i=0,largest,l,r,length=n-1;
+  int type=0, i=0,largest,l,r;
   largest=l=r=0;
 
-  // bool isSpacePressed=true;
+  bool isSpacePressed=true;
 
-  std::queue<int> st;
-  for(int i = n / 2 - 1; i >= 0; i--) st.push(i);
-  i = st.front();
+  std::stack<int> st;
+  for(int k=0;k<=n/2-1;k++) st.push(k);
+  i = st.top();
   st.pop();
 
   //Window
@@ -68,18 +68,23 @@ int main(){
     while(appWindow.pollEvent(appEvent)){
       if(appEvent.type == Event::Closed) appWindow.close();
     }
+      std::cout<<type<<std::endl;
       if(!type){
-
+          if(st.empty()){
+            std::cout<<"i: "<<i<<std::endl;
+            type = 1;
+          }
+          else{            
             largest = i; // Initialize largest as root
             l = 2 * i + 1; // left = 2*i + 1
             r = 2 * i + 2; // right = 2*i + 2
         
             // If left child is larger than root
-            if (l < length && b.column[l].height >= b.column[largest].height)
+            if (l < n && b.column[l].height > b.column[largest].height)
                 largest = l;
         
             // If right child is larger than largest so far
-            if (r < length && b.column[r].height >= b.column[largest].height)
+            if (r < n && b.column[r].height > b.column[largest].height)
                 largest = r;
         
             // If largest is not root
@@ -88,23 +93,18 @@ int main(){
                 i = largest;
             }
             else{
-              if(st.empty()){
-                type =1;
-
-              }else{
-                i = st.front();
-                st.pop();
-              }
+              i = st.top();
+              st.pop();
             }
-          
+          }
       }
 
       
       if(type){
-        b.swap(0,length);
-        for(int i = n - 1; i >= 0; i--) st.push(i);
-        length--;
-        type = 0;
+          --n;
+          b.swap(0,n);
+          for(int k=0;k<n/2-1;k++) st.push(k);
+          type = 0;
       }
 
     //PRINT

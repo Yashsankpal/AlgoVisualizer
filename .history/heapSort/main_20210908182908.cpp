@@ -34,10 +34,10 @@ class Box{
 int main(){
 
   //Inputs
-  int n=400;
+  int n=100;
   Box b(n);
 
-  int type=0, i=0,largest,l,r,length=n-1;
+  int type=0, i=0,largest,l,r,length=99;
   largest=l=r=0;
 
   // bool isSpacePressed=true;
@@ -69,7 +69,28 @@ int main(){
       if(appEvent.type == Event::Closed) appWindow.close();
     }
       if(!type){
-
+          if(st.empty()){
+            std::cout<<"i: "<<i<<std::endl;
+            largest = i; // Initialize largest as root
+            l = 2 * i + 1; // left = 2*i + 1
+            r = 2 * i + 2; // right = 2*i + 2
+        
+            // If left child is larger than root
+            if (l < length && b.column[l].height >= b.column[largest].height)
+                largest = l;
+        
+            // If right child is larger than largest so far
+            if (r < length && b.column[r].height >= b.column[largest].height)
+                largest = r;
+        
+            // If largest is not root
+            if (largest != i) {
+                b.swap(i,largest);
+                i = largest;
+            }
+            type = 1;
+          }
+          else{            
             largest = i; // Initialize largest as root
             l = 2 * i + 1; // left = 2*i + 1
             r = 2 * i + 2; // right = 2*i + 2
@@ -88,15 +109,10 @@ int main(){
                 i = largest;
             }
             else{
-              if(st.empty()){
-                type =1;
-
-              }else{
-                i = st.front();
-                st.pop();
-              }
+              i = st.front();
+              st.pop();
             }
-          
+          }
       }
 
       
