@@ -2,4 +2,7 @@
 /*.exe
 /*/*.exe
 /*/*.dll
-*/src/
+./*/src/
+
+**/src/
+.history/
