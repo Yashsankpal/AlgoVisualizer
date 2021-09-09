@@ -38,7 +38,7 @@ void quickSort(int arr[], int low, int high)
         int pi = partition(arr, low, high); 
   
         // Separately sort elements before 
-        // partition and after partition 
+        // partition and after partition 7
         quickSort(arr, low, pi - 1); 
         quickSort(arr, pi + 1, high); 
     } 

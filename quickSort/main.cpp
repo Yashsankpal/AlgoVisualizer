@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include<bits/stdc++.h>
+
+using namespace std;
 using namespace sf;
 
 struct Data{
@@ -8,21 +10,34 @@ struct Data{
   int posx;
 };
 
+struct lst{
+  int low;
+  int high;
+};
+
 class Box{
   public:
-  std::vector<Data> column;
-    Box(int value){
-      Data data;
-      for(int i=0;i<value;i++){
-        data.posx = i;
-        data.height = 1 + rand()%(500);
-        column.push_back(data);
-      }
+  int part=0;
+  vector<Data> column;
+
+  //Create
+  Box(int value){
+    Data data;
+    for(int i=0;i<value;i++){
+      data.posx = i;
+      data.height = 1 + rand()%(500);
+      column.push_back(data);
     }
-    void swap(int left,int right){
-      std::swap(column[left].height,column[right].height);
-    }
+  }
+
+  //Swap 
+  void swap(int left,int right){
+    swap(column[left].height,column[right].height);
+  }
+
 };
+
+
 
 
 int main(){
@@ -30,15 +45,22 @@ int main(){
   //Inputs
   int n=400;
   Box b(n);
+  // bool sort = false;
 
-  int type=0, i=0,largest,l,r,length=n-1;
-  largest=l=r=0;
+  int low,high,pivot,i,j;
+  low=high=pivot=0;
+  
+  queue<lst> qu;
+  lst ls;
 
+  ls.low = 0;
+  ls.high = n-1;
+  qu.push(ls);
 
 
 
   //Window
-  RenderWindow appWindow(VideoMode(800,600),"heap Sort");
+  RenderWindow appWindow(VideoMode(800,600),"quick Sort");
   Event appEvent;
   Texture fondot;
   fondot.loadFromFile("fondo1.png");
@@ -59,11 +81,44 @@ int main(){
       if(appEvent.type == Event::Closed) appWindow.close();
     }
 
+    if(!qu.empty()){
+      
+      lst tq = qu.front();
+      qu.pop();
+      
+      pivot = b.column[tq.high].height; // pivot 
+      i = (tq.low - 1); // Index of smaller element and indicates the right position of pivot found so far
+    
+      for (j = tq.low; j < tq.high; j++) 
+      { 
+          // If current element is smaller than the pivot 
+          if (b.column[j].height < pivot) 
+          { 
+              i++; // increment index of smaller element 
+              b.swap(i,j); 
+          } 
+      }
+
+      b.swap(i + 1, tq.high); 
+
+      lst ts;
+      if(i != tq.low){
+        ts.low = tq.low;
+        ts.high = i;
+        qu.push(ts);
+      }
+      if(i+1 != tq.high){
+        ts.low = i+2;
+        ts.high = tq.high;
+        qu.push(ts);
+      }
+
+    }
 
 
     //PRINT
     for(auto x:b.column){
-      rectangle.setFillColor(Color(255,200,145));
+      rectangle.setFillColor(Color(250,100,200));
       rectangle.setPosition(x.posx,600);
       rectangle.setSize(Vector2f(1,x.height));
       rectangle.setRotation(180);
