@@ -57,7 +57,9 @@ class Box{
 int main(){
 
   //Inputs
-  int n=300;
+  int n=1000;
+
+  
   Box b(n);
   // bool sort = false;
 
@@ -69,7 +71,7 @@ int main(){
 
 
   //Window
-  RenderWindow appWindow(VideoMode(800,600),"quick Sort");
+  RenderWindow appWindow(VideoMode(2000,1000),"quick Sort");
   Event appEvent;
   Texture fondot;
   fondot.loadFromFile("fondo1.png");
