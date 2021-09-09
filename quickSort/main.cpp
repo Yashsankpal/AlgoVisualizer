@@ -49,11 +49,6 @@ class Box{
     return tq;
   }
 
-  void bpush(int low,int high){
-    tq.low = low;
-    tq.high = high;
-    ls.push(tq); 
-  }
 };
 
 
@@ -62,7 +57,7 @@ class Box{
 int main(){
 
   //Inputs
-  int n=500;
+  int n=300;
   Box b(n);
   // bool sort = false;
 

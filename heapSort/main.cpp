@@ -2,31 +2,38 @@
 #include<iostream>
 #include<bits/stdc++.h>
 using namespace sf;
+using namespace std;
 
 struct Data{
   int height;
   int posx;
-  int x;
-  int y;
-  int z;
 };
 
 class Box{
   public:
-  std::vector<Data> column;
+  vector<Data> column;
+  queue<int> st;
     Box(int value){
       Data data;
       for(int i=0;i<value;i++){
         data.posx = i;
         data.height = 1 + rand()%(500);
-        data.x = i+ rand()%(255);
-        data.y = i+ rand()%(255);
-        data.z = i+ rand()%(255);
         column.push_back(data);
       }
     }
-    void swap(int left,int right){
-      std::swap(column[left].height,column[right].height);
+    void bswap(int left,int right){
+      swap(column[left].height,column[right].height);
+    }
+    void init(int n){
+      for(int i = n / 2 - 1; i >= 0; i--) st.push(i);
+    }
+    int bfront(){
+      int i = st.front();
+      st.pop();
+      return i;
+    }
+    void bRequeue(int n){
+      for(int i = n; i >= 0; i--) st.push(i);
     }
 };
 
@@ -42,10 +49,8 @@ int main(){
 
   // bool isSpacePressed=true;
 
-  std::queue<int> st;
-  for(int i = n / 2 - 1; i >= 0; i--) st.push(i);
-  i = st.front();
-  st.pop();
+  b.init(n);
+  i = b.bfront();
 
   //Window
   RenderWindow appWindow(VideoMode(800,600),"heap Sort");
@@ -84,16 +89,15 @@ int main(){
         
             // If largest is not root
             if (largest != i) {
-                b.swap(i,largest);
+                b.bswap(i,largest);
                 i = largest;
             }
             else{
-              if(st.empty()){
+              if(b.st.empty()){
                 type =1;
 
               }else{
-                i = st.front();
-                st.pop();
+                i = b.bfront();
               }
             }
           
@@ -101,15 +105,15 @@ int main(){
 
       
       if(type){
-        b.swap(0,length);
-        for(int i = n - 1; i >= 0; i--) st.push(i);
+        b.bswap(0,length);
+        b.bRequeue(n-1);
         length--;
         type = 0;
       }
 
     //PRINT
     for(auto x:b.column){
-      rectangle.setFillColor(Color(x.x,x.y,x.z));
+      rectangle.setFillColor(Color(255,i,200));
       rectangle.setPosition(x.posx,600);
       rectangle.setSize(Vector2f(1,x.height));
       rectangle.setRotation(180);
