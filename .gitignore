@@ -1,7 +1,7 @@
 /*.cpp
 /*.exe
 /*/*.exe
-/*/*.dll
+# /*/*.dll
 ./*/src/
 
 **/src/
